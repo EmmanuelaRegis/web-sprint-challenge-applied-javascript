@@ -1,3 +1,4 @@
+import axios from "axios"
 const Card = (article) => {
   // TASK 5
   // ---------------------
@@ -17,7 +18,39 @@ const Card = (article) => {
   //   </div>
   // </div>
   //
+   const cardS = document.createElement('div')
+   const headlineE = document.createElement('div')
+   const authorE = document.createElement('div')
+   const imageS = document.createElement('div')
+   const photo = document.createElement('img')
+   const name = document.createElement('span')
+
+   cardS.classList = 'card'
+   headlineE.classList = 'headline'
+   authorE.classList = 'author'
+   imageS.classList = 'img-container'
+
+   headlineE.textContent =  article.headline
+   photo.src = article.authorPhoto
+   name.textContent = `By ${article.authorName}`
+
+   cardS.appendChild(headlineE)
+   cardS.appendChild(authorE)
+   authorE.appendChild(imageS)
+   imageS.appendChild(photo)
+   authorE.appendChild(name)
+
+   cardS.addEventListener('click', foo)
+
+   function foo() {
+    console.log (article.headline);
+   
+   }
+   
+   return cardS;
 }
+  (Card({'headline': 'Rihanna' , 'authorPhoto': 'photo', 'authorName' : 'Popo'}))
+
 
 const cardAppender = (selector) => {
   // TASK 6
@@ -28,6 +61,31 @@ const cardAppender = (selector) => {
   // Create a card from each and every article object in the response, using the Card component.
   // Append each card to the element in the DOM that matches the selector passed to the function.
   //
+   const life = document.querySelector(selector)
+     axios.get(`http://localhost:5001/api/articles`)
+     .then((teen)=> {
+     console.log(teen.data)
+    for(let i = 0; i < teen.data.articles.bootstrap.length; i++){
+      life.appendChild(Card(teen.data.articles.bootstrap[i]))
+    }
+    for (let i = 0;i < teen.data.articles.javascript.length; i++) {
+      life.appendChild(Card(teen.data.articles.javascript[i]))
+    }
+    for (let i = 0;i < teen.data.articles.technology.length; i++) {
+      life.appendChild(Card(teen.data.articles.technology[i]))
+    }
+    for (let i = 0;i < teen.data.articles.jquery.length; i++) {
+      life.appendChild(Card(teen.data.articles.jquery[i]))
+    }
+    for (let i = 0;i < teen.data.articles.node.length; i++) {
+      life.appendChild(Card(teen.data.articles.node[i]))
+    }
+    
+   // life.appendChild(Card(teen.data.articles.bootstrap[0]))
+   // life.appendChild(Card(teen.data.articles.bootstrap[1]))
+ })
+
 }
+
 
 export { Card, cardAppender }
